@@ -19,6 +19,7 @@ Plateforme MVP de mise en relation entre **cabinets dentaires** et **chirurgiens
 - Checklist administrative indicative par remplacement
 - Interface admin minimale (utilisateurs, documents, annonces, audit)
 - RLS strict sur toutes les tables, buckets Storage public/privé, URLs signées
+- Marché de lancement **La Réunion** : constante `LAUNCH_MARKET` dans `src/lib/constants.ts` (communes et zones de mobilité de l'île dans `src/lib/data/reference.ts`)
 
 ## Stack
 
@@ -65,7 +66,7 @@ Dans **Authentication → Sign In / Providers → Email** : désactiver **Confir
 
 ### 3. Données de démonstration
 
-Exécuter `supabase/seed.sql` dans le SQL Editor (déjà appliqué sur le projet de développement). Il crée des identités **fictives** : 5 cabinets (Lyon, Paris, La Réunion, Guadeloupe, Martinique), 4 remplaçants (2 diplômés, 1 étudiant, 1 interne), 1 admin, 6 annonces, 5 candidatures dont 1 acceptée avec remplacement, conversation et messages.
+Exécuter `supabase/seed.sql` dans le SQL Editor (déjà appliqué sur le projet de développement). Il crée des identités **fictives** : 5 cabinets réunionnais (Saint-Pierre, Saint-Paul, Saint-Denis, Le Tampon, Saint-André) et 4 remplaçants installés sur l'île (2 diplômés, 1 étudiant, 1 interne), 1 admin, 6 annonces, 5 candidatures dont 1 acceptée avec remplacement, conversation et messages.
 
 ## Commandes
 
@@ -85,10 +86,15 @@ npm run test:e2e   # tests end-to-end (Playwright — voir e2e/README.md)
 
 | Rôle | Email | Mot de passe |
 |---|---|---|
-| Cabinet (Lyon) | `demo.cabinet@dentmatch.example` | `DemoCabinet2026!` |
-| Remplaçante diplômée | `demo.remplacant@dentmatch.example` | `DemoRemplacant2026!` |
-| Étudiant autorisé | `remplacant.etudiant@dentmatch.example` | `DemoRemplacant2026!` |
-| Interne ODF | `remplacant.interne@dentmatch.example` | `DemoRemplacant2026!` |
+| Cabinet (Saint-Pierre) | `demo.cabinet@dentmatch.example` | `DemoCabinet2026!` |
+| Cabinet (Saint-Paul) | `cabinet.saintpaul@dentmatch.example` | `DemoCabinet2026!` |
+| Cabinet (Saint-Denis) | `cabinet.reunion@dentmatch.example` | `DemoCabinet2026!` |
+| Cabinet (Le Tampon) | `cabinet.tampon@dentmatch.example` | `DemoCabinet2026!` |
+| Cabinet (Saint-André) | `cabinet.saintandre@dentmatch.example` | `DemoCabinet2026!` |
+| Remplaçante diplômée (Saint-Denis) | `demo.remplacant@dentmatch.example` | `DemoRemplacant2026!` |
+| Étudiant autorisé (Le Tampon) | `remplacant.etudiant@dentmatch.example` | `DemoRemplacant2026!` |
+| Interne ODF (Saint-Pierre) | `remplacant.interne@dentmatch.example` | `DemoRemplacant2026!` |
+| Remplaçant diplômé (Saint-Paul) | `remplacant.marseille@dentmatch.example` | `DemoRemplacant2026!` |
 | Administrateur | `admin@dentmatch.example` | `AdminDemo2026!` |
 
 Avec `NEXT_PUBLIC_DEMO_MODE=true`, la page `/connexion` affiche deux boutons « Tester comme cabinet » / « Tester comme remplaçant » qui préremplissent ces identifiants.

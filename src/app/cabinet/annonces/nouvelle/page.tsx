@@ -1,11 +1,20 @@
+import { CalendarDays } from "lucide-react";
 import { requireRole } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ErrorState } from "@/components/shared/error-state";
 import { JobPostForm } from "@/components/cabinet/job-post-form";
 
 export const metadata = { title: "Publier une annonce" };
 
-export default async function NewJobPostPage() {
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+export default async function NewJobPostPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ debut?: string; fin?: string }>;
+}) {
+  const { debut, fin } = await searchParams;
   const profile = await requireRole("cabinet");
   const supabase = await createClient();
 
@@ -24,6 +33,11 @@ export default async function NewJobPostPage() {
     );
   }
 
+  // Dates transmises par la recherche de remplaçant (pré-remplissage).
+  const startDate = debut && DATE_RE.test(debut) ? debut : undefined;
+  const endDate = fin && DATE_RE.test(fin) ? fin : undefined;
+  const prefilled = Boolean(startDate || endDate);
+
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
@@ -36,7 +50,27 @@ export default async function NewJobPostPage() {
         </p>
       </div>
 
-      <JobPostForm cabinetCity={cabinet.city} />
+      {prefilled ? (
+        <Alert className="border-primary/25 bg-primary/5">
+          <CalendarDays className="size-4" aria-hidden="true" />
+          <AlertDescription>
+            Dates pré-remplies depuis votre recherche de remplaçant —
+            modifiables à tout moment.
+          </AlertDescription>
+        </Alert>
+      ) : null}
+
+      <JobPostForm
+        cabinetCity={cabinet.city}
+        defaultValues={
+          prefilled
+            ? {
+                ...(startDate ? { startDate } : {}),
+                ...(endDate ? { endDate } : {}),
+              }
+            : undefined
+        }
+      />
     </div>
   );
 }
