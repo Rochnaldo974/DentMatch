@@ -28,13 +28,13 @@ export function ProblemSection() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="band-dark relative overflow-hidden rounded-3xl px-6 py-14 sm:px-10 sm:py-16 lg:px-14">
           <div className="max-w-2xl">
-            <p className="text-xs font-semibold tracking-widest text-sidebar-primary uppercase">
+            <p className="text-xs font-semibold tracking-widest text-verified uppercase">
               Le constat
             </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance text-white sm:text-4xl">
               Trouver un remplaçant ne devrait pas être un parcours d&apos;obstacles.
             </h2>
-            <p className="mt-4 text-base leading-relaxed text-sidebar-foreground">
+            <p className="mt-4 text-base leading-relaxed text-night-foreground">
               Aujourd&apos;hui, cabinets et remplaçants composent avec des outils
               qui n&apos;ont pas été pensés pour eux.
             </p>
@@ -47,13 +47,13 @@ export function ProblemSection() {
                 className="rounded-2xl border border-white/10 bg-white/5 p-6 transition-colors duration-200 hover:bg-white/8"
               >
                 <problem.icon
-                  className="size-5 text-sidebar-primary"
+                  className="size-5 text-verified"
                   aria-hidden="true"
                 />
                 <h3 className="mt-4 text-base font-semibold text-white">
                   {problem.title}
                 </h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-sidebar-foreground">
+                <p className="mt-1.5 text-sm leading-relaxed text-night-foreground">
                   {problem.description}
                 </p>
               </div>

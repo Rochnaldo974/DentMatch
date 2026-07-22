@@ -11,7 +11,7 @@ export function FinalCta() {
             <h2 className="mx-auto max-w-2xl text-3xl font-semibold tracking-tight text-balance text-white sm:text-5xl">
               Votre prochain remplacement commence ici.
             </h2>
-            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-sidebar-foreground">
+            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-night-foreground">
               Rejoignez la phase de test gratuite et découvrez une mise en
               relation pensée pour la profession.
             </p>

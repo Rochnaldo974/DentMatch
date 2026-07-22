@@ -48,9 +48,9 @@ export default function AuthLayout({
             {REASSURANCE_POINTS.map(({ icon: Icon, text }) => (
               <li
                 key={text}
-                className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-sidebar-foreground"
+                className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-night-foreground"
               >
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-white/10 text-sidebar-primary">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-white/10 text-verified">
                   <Icon className="size-4.5" aria-hidden="true" />
                 </span>
                 {text}
@@ -59,7 +59,7 @@ export default function AuthLayout({
           </ul>
         </div>
 
-        <p className="relative text-xs text-sidebar-foreground/60">
+        <p className="relative text-xs text-night-foreground/60">
           © {new Date().getFullYear()} {APP_NAME}
         </p>
       </aside>

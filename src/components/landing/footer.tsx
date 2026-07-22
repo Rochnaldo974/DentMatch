@@ -19,7 +19,7 @@ const LEGAL_LINKS = [
 
 export function LandingFooter() {
   return (
-    <footer className="bg-sidebar text-sidebar-foreground">
+    <footer className="bg-night text-night-foreground">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
@@ -33,11 +33,11 @@ export function LandingFooter() {
                 {APP_NAME}
               </span>
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-sidebar-foreground">
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-night-foreground">
               La mise en relation des cabinets dentaires et des
               chirurgiens-dentistes remplaçants, en France et outre-mer.
             </p>
-            <p className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-white/15 px-2.5 py-1 text-xs font-medium text-sidebar-foreground">
+            <p className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-white/15 px-2.5 py-1 text-xs font-medium text-night-foreground">
               <FlaskConical className="size-3.5" aria-hidden="true" />
               MVP de démonstration
             </p>
@@ -50,7 +50,7 @@ export function LandingFooter() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-sm text-sidebar-foreground transition-colors hover:text-white"
+                    className="text-sm text-night-foreground transition-colors hover:text-white"
                   >
                     {link.label}
                   </a>
@@ -66,7 +66,7 @@ export function LandingFooter() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-sidebar-foreground transition-colors hover:text-white"
+                    className="text-sm text-night-foreground transition-colors hover:text-white"
                   >
                     {link.label}
                   </Link>
@@ -79,7 +79,7 @@ export function LandingFooter() {
             <h3 className="text-sm font-semibold text-white/90">Contact</h3>
             <a
               href={`mailto:${CONTACT_EMAIL}`}
-              className="mt-4 inline-flex items-center gap-2 text-sm text-sidebar-foreground transition-colors hover:text-white"
+              className="mt-4 inline-flex items-center gap-2 text-sm text-night-foreground transition-colors hover:text-white"
             >
               <Mail className="size-4" aria-hidden="true" />
               {CONTACT_EMAIL}
@@ -88,10 +88,10 @@ export function LandingFooter() {
         </div>
 
         <div className="mt-12 border-t border-white/10 pt-6">
-          <p className="text-xs leading-relaxed text-sidebar-foreground/60">
+          <p className="text-xs leading-relaxed text-night-foreground/60">
             {LEGAL_DISCLAIMER}
           </p>
-          <p className="mt-4 text-xs text-sidebar-foreground/60">
+          <p className="mt-4 text-xs text-night-foreground/60">
             © {new Date().getFullYear()} {APP_NAME}. Tous droits réservés.
           </p>
         </div>

@@ -17,7 +17,7 @@ export function SidebarNav({
   const items = navItemsForRole(role);
 
   return (
-    <nav aria-label="Navigation principale" className="flex flex-col gap-1">
+    <nav aria-label="Navigation principale" className="flex flex-col gap-0.5">
       {items.map((item) => {
         const active =
           pathname === item.href ||
@@ -30,27 +30,21 @@ export function SidebarNav({
             onClick={onNavigate}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150",
+              "relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150",
               active
-                ? "bg-white/10 text-white"
-                : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                ? "bg-card text-foreground shadow-xs"
+                : "text-muted-foreground hover:bg-card/60 hover:text-foreground",
             )}
           >
-            {/* Indicateur turquoise de la page active */}
-            <span
-              className={cn(
-                "absolute left-0 h-5 w-0.75 rounded-full bg-sidebar-primary transition-opacity",
-                active ? "opacity-100" : "opacity-0",
-              )}
-              aria-hidden="true"
-            />
+            {/* Barre turquoise de la page active */}
+            {active ? (
+              <span
+                className="absolute top-1/2 left-0 h-4 w-0.5 -translate-y-1/2 rounded-full bg-verified"
+                aria-hidden="true"
+              />
+            ) : null}
             <Icon
-              className={cn(
-                "size-4.5 shrink-0 transition-colors",
-                active
-                  ? "text-sidebar-primary"
-                  : "text-sidebar-foreground/70 group-hover:text-sidebar-accent-foreground",
-              )}
+              className={cn("size-4.5 shrink-0", active && "text-verified")}
               aria-hidden="true"
             />
             {item.label}

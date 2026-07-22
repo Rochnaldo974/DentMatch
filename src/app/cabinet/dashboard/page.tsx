@@ -48,7 +48,7 @@ function StatCard({
         <span className="text-sm text-muted-foreground">{label}</span>
         <Icon className="size-4 text-muted-foreground" aria-hidden />
       </div>
-      <p className="mt-2 text-3xl font-semibold tabular-nums">{value}</p>
+      <p className="font-data mt-2 text-3xl font-semibold">{value}</p>
     </Link>
   );
 }
