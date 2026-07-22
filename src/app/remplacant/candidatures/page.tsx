@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/tabs";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ErrorState } from "@/components/shared/error-state";
+import { PageHeader } from "@/components/shared/page-header";
 import {
   ApplicationCard,
   type ApplicationCardData,
@@ -94,15 +95,11 @@ export default async function ReplacementApplicationsPage({
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Mes candidatures
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Suivez l&apos;avancement de vos candidatures et échangez avec les
-          cabinets.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Candidatures"
+        title="Mes candidatures"
+        description="Suivez l'avancement de vos candidatures et échangez avec les cabinets."
+      />
 
       {cards.length === 0 ? (
         <EmptyState

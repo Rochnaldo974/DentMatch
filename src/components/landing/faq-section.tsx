@@ -41,7 +41,8 @@ export function FaqSection() {
   return (
     <section className="py-20 sm:py-24">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+        <p className="eyebrow">FAQ</p>
+        <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
           Questions fréquentes
         </h2>
 
@@ -49,7 +50,7 @@ export function FaqSection() {
           {FAQ_ITEMS.map((item) => (
             <details
               key={item.question}
-              className="group rounded-xl border bg-card px-5 shadow-[var(--shadow-card)] sm:px-6"
+              className="group rounded-xl bg-card px-5 shadow-[var(--shadow-card)] ring-1 ring-black/5 sm:px-6"
             >
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
                 {item.question}

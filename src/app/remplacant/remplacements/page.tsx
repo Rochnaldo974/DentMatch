@@ -18,6 +18,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ErrorState } from "@/components/shared/error-state";
+import { PageHeader } from "@/components/shared/page-header";
 import { PlacementStatusBadge } from "@/components/shared/status-badge";
 import { PlacementChecklist } from "@/components/remplacant/placement-checklist";
 import { OpenConversationButton } from "@/components/remplacant/open-conversation-button";
@@ -169,15 +170,11 @@ export default async function ReplacementPlacementsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Mes remplacements
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Retrouvez vos remplacements confirmés et leur checklist
-          administrative indicative.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Remplacements"
+        title="Mes remplacements"
+        description="Retrouvez vos remplacements confirmés et leur checklist administrative indicative."
+      />
 
       {all.length === 0 ? (
         <EmptyState

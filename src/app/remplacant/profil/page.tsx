@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ErrorState } from "@/components/shared/error-state";
+import { PageHeader } from "@/components/shared/page-header";
 import { ProfileCompletion } from "@/components/shared/profile-completion";
 import { VerificationBadge } from "@/components/shared/verification-badge";
 import { IdentityForm, BioForm } from "@/app/remplacant/profil/profile-forms";
@@ -99,16 +100,12 @@ export default async function ReplacementProfilePage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Mon profil</h1>
-          <p className="text-sm text-muted-foreground">
-            Vos informations déclarées, visibles par les cabinets selon vos
-            réglages.
-          </p>
-        </div>
-        <VerificationBadge status={profile.verification_status} />
-      </div>
+      <PageHeader
+        eyebrow="Profil"
+        title="Mon profil"
+        description="Vos informations déclarées, visibles par les cabinets selon vos réglages."
+        action={<VerificationBadge status={profile.verification_status} />}
+      />
 
       <Card>
         <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-center">

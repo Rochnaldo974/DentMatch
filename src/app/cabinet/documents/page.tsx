@@ -1,5 +1,6 @@
 import { requireRole } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { PageHeader } from "@/components/shared/page-header";
 import { DocumentManager } from "@/components/documents/document-manager";
 import { CABINET_DOCUMENT_TYPES } from "@/lib/data/reference";
 
@@ -17,13 +18,11 @@ export default async function CabinetDocumentsPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Documents</h1>
-        <p className="text-sm text-muted-foreground">
-          Téléversez les justificatifs de votre structure. Les documents
-          obligatoires sont signalés par un astérisque.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Documents"
+        title="Documents"
+        description="Téléversez les justificatifs de votre structure. Les documents obligatoires sont signalés par un astérisque."
+      />
 
       <DocumentManager
         definitions={CABINET_DOCUMENT_TYPES}

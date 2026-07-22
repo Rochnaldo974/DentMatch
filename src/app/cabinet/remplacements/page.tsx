@@ -1,6 +1,7 @@
 import { requireRole } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { ErrorState } from "@/components/shared/error-state";
+import { PageHeader } from "@/components/shared/page-header";
 import {
   PlacementList,
   type PlacementGroup,
@@ -82,14 +83,11 @@ export default async function CabinetPlacementsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Remplacements
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Suivez vos remplacements confirmés et leur checklist administrative.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Remplacements"
+        title="Remplacements"
+        description="Suivez vos remplacements confirmés et leur checklist administrative."
+      />
 
       <PlacementList placements={placements} />
     </div>

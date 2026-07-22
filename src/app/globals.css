@@ -218,6 +218,32 @@
       0 1px 2px oklch(0.25 0.05 260 / 0.06),
       0 12px 32px -12px oklch(0.25 0.05 260 / 0.18);
   }
+  /* Aurore — base claire avec lueurs turquoise/bleu douces (hero, en-têtes). */
+  .bg-aurora {
+    background-color: oklch(0.985 0.004 220);
+    background-image:
+      radial-gradient(
+        720px 500px at 6% -8%,
+        oklch(0.6 0.104 184 / 0.2),
+        transparent 62%
+      ),
+      radial-gradient(
+        680px 500px at 96% 4%,
+        oklch(0.55 0.09 250 / 0.18),
+        transparent 60%
+      ),
+      radial-gradient(
+        640px 560px at 60% 116%,
+        oklch(0.65 0.08 200 / 0.14),
+        transparent 62%
+      ),
+      linear-gradient(
+        160deg,
+        oklch(1 0 0),
+        oklch(0.975 0.008 210) 58%,
+        oklch(0.96 0.015 200)
+      );
+  }
   /* Halo turquoise diffus derrière le hero. */
   .hero-glow {
     background:

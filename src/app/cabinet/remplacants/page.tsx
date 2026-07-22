@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ErrorState } from "@/components/shared/error-state";
+import { PageHeader } from "@/components/shared/page-header";
 import {
   CandidateCard,
   type CandidateAvailability,
@@ -300,15 +301,11 @@ export default async function CabinetCandidatesPage({
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Trouver un remplaçant
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Parcourez les profils publics des remplaçants et invitez-les à
-          candidater à vos annonces.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Recherche"
+        title="Trouver un remplaçant"
+        description="Parcourez les profils publics des remplaçants et invitez-les à candidater à vos annonces."
+      />
 
       {jobPosts.length === 0 ? (
         <Alert>

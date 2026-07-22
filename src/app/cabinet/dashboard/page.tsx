@@ -21,35 +21,21 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ErrorState } from "@/components/shared/error-state";
 import { ApplicationStatusBadge } from "@/components/shared/status-badge";
 import { ProfileCompletion } from "@/components/shared/profile-completion";
+import { PageHeader } from "@/components/shared/page-header";
+import { StatCard } from "@/components/shared/stat-card";
 
 export const metadata = { title: "Vue d'ensemble" };
 
-function StatCard({
-  label,
-  value,
-  icon: Icon,
-  href,
-}: {
-  label: string;
-  value: number;
-  icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
-  href: string;
-}) {
+/** Initiales pour l'avatar de repli (pas de photo dans cette requête). */
+function initialsOf(firstName?: string | null, lastName?: string | null) {
   return (
-    <Link
-      href={href}
-      className="rounded-xl border bg-card p-5 transition-colors hover:border-primary/40"
-    >
-      <div className="flex items-center justify-between gap-2">
-        <span className="text-sm text-muted-foreground">{label}</span>
-        <Icon className="size-4 text-muted-foreground" aria-hidden />
-      </div>
-      <p className="font-data mt-2 text-3xl font-semibold">{value}</p>
-    </Link>
+    `${firstName?.charAt(0) ?? ""}${lastName?.charAt(0) ?? ""}`.toUpperCase() ||
+    "DM"
   );
 }
 
@@ -130,58 +116,68 @@ export default async function CabinetDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Bonjour, {profile.first_name}
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Voici l&apos;activité de {cabinet.name || "votre cabinet"}.
-          </p>
-        </div>
-        <Button asChild>
-          <Link href="/cabinet/annonces/nouvelle">
-            <Plus aria-hidden />
-            Publier une annonce
-          </Link>
-        </Button>
-      </div>
+      <PageHeader
+        eyebrow="Vue d'ensemble"
+        title={`Bonjour, ${profile.first_name}`}
+        description={`Voici l'activité de ${cabinet.name || "votre cabinet"}.`}
+        action={
+          <Button asChild>
+            <Link href="/cabinet/annonces/nouvelle">
+              <Plus aria-hidden />
+              Publier une annonce
+            </Link>
+          </Button>
+        }
+      />
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div
+        className="animate-rise grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
+        style={{ "--d": "40ms" } as React.CSSProperties}
+      >
         <StatCard
           label="Annonces actives"
           value={activePosts.length}
           icon={Megaphone}
+          tone="primary"
           href="/cabinet/annonces"
         />
         <StatCard
           label="Candidatures reçues"
           value={applications.length}
           icon={Users}
+          tone="teal"
           href="/cabinet/candidatures"
         />
         <StatCard
           label="À traiter"
           value={toProcess.length}
+          hint="en attente de réponse"
           icon={Inbox}
+          tone="amber"
           href="/cabinet/candidatures"
         />
         <StatCard
           label="Remplacements confirmés"
           value={confirmedCount}
           icon={CalendarCheck}
+          tone="violet"
           href="/cabinet/remplacements"
         />
       </div>
 
       {cabinet.profile_completion < 100 ? (
-        <Card>
-          <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-center">
-            <ProfileCompletion
-              value={cabinet.profile_completion}
-              label="Complétion du profil du cabinet"
-              className="flex-1"
-            />
+        <Card
+          className="animate-rise"
+          style={{ "--d": "100ms" } as React.CSSProperties}
+        >
+          <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-end">
+            <div className="flex-1 space-y-3">
+              <p className="eyebrow">Profil du cabinet</p>
+              <ProfileCompletion
+                value={cabinet.profile_completion}
+                label="Complétion du profil du cabinet"
+              />
+            </div>
             <Button variant="outline" size="sm" asChild>
               <Link href="/cabinet/profil">Compléter</Link>
             </Button>
@@ -190,28 +186,39 @@ export default async function CabinetDashboardPage() {
       ) : null}
 
       {nextPlacement ? (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-base">
-              <UserCheck className="size-4 text-primary" aria-hidden />
-              Prochain remplacement
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="font-medium">
-                {nextPlacement.replacement?.first_name}{" "}
-                {nextPlacement.replacement?.last_name}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {nextPlacement.job_posts?.title}
-                {nextPlacement.start_date
-                  ? ` — du ${format(new Date(nextPlacement.start_date), "d MMMM yyyy", { locale: fr })}`
-                  : null}
-                {nextPlacement.end_date
-                  ? ` au ${format(new Date(nextPlacement.end_date), "d MMMM yyyy", { locale: fr })}`
-                  : null}
-              </p>
+        <Card
+          className="animate-rise relative overflow-hidden"
+          style={{ "--d": "140ms" } as React.CSSProperties}
+        >
+          <span
+            className="absolute inset-x-0 top-0 h-1 bg-primary"
+            aria-hidden
+          />
+          <CardContent className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-start gap-3.5">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <UserCheck className="size-5" aria-hidden />
+              </span>
+              <div>
+                <p className="eyebrow mb-1.5">Prochain remplacement</p>
+                <p className="text-lg font-semibold tracking-tight">
+                  {nextPlacement.replacement?.first_name}{" "}
+                  {nextPlacement.replacement?.last_name}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {nextPlacement.job_posts?.title}
+                </p>
+                {nextPlacement.start_date || nextPlacement.end_date ? (
+                  <p className="font-data mt-1.5 text-sm text-foreground/80">
+                    {nextPlacement.start_date
+                      ? `Du ${format(new Date(nextPlacement.start_date), "d MMMM yyyy", { locale: fr })}`
+                      : null}
+                    {nextPlacement.end_date
+                      ? ` au ${format(new Date(nextPlacement.end_date), "d MMMM yyyy", { locale: fr })}`
+                      : null}
+                  </p>
+                ) : null}
+              </div>
             </div>
             <Button variant="outline" size="sm" asChild>
               <Link href="/cabinet/remplacements">Voir le remplacement</Link>
@@ -220,9 +227,13 @@ export default async function CabinetDashboardPage() {
         </Card>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div
+        className="animate-rise grid gap-6 lg:grid-cols-2"
+        style={{ "--d": "180ms" } as React.CSSProperties}
+      >
         <Card>
           <CardHeader>
+            <p className="eyebrow mb-1">Candidatures</p>
             <CardTitle className="text-base">Dernières candidatures</CardTitle>
           </CardHeader>
           <CardContent>
@@ -236,24 +247,36 @@ export default async function CabinetDashboardPage() {
             ) : (
               <ul className="divide-y">
                 {lastApplications.map((app) => (
-                  <li key={app.id} className="py-3 first:pt-0 last:pb-0">
+                  <li key={app.id}>
                     <Link
                       href="/cabinet/candidatures"
-                      className="flex items-center justify-between gap-3"
+                      className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-3.5 transition-colors hover:bg-muted/50"
                     >
-                      <div className="min-w-0">
+                      <Avatar className="size-9 shrink-0">
+                        <AvatarFallback className="text-xs font-medium">
+                          {initialsOf(
+                            app.applicant?.first_name,
+                            app.applicant?.last_name,
+                          )}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="min-w-0 flex-1">
                         <p className="truncate font-medium">
                           {app.applicant?.first_name} {app.applicant?.last_name}
                         </p>
                         <p className="truncate text-sm text-muted-foreground">
-                          {app.job_posts.title} —{" "}
+                          {app.job_posts.title}
+                        </p>
+                      </div>
+                      <div className="flex shrink-0 flex-col items-end gap-1.5">
+                        <span className="font-data text-xs text-muted-foreground">
                           {formatDistanceToNow(new Date(app.submitted_at), {
                             addSuffix: true,
                             locale: fr,
                           })}
-                        </p>
+                        </span>
+                        <ApplicationStatusBadge status={app.status} />
                       </div>
-                      <ApplicationStatusBadge status={app.status} />
                     </Link>
                   </li>
                 ))}
@@ -265,6 +288,7 @@ export default async function CabinetDashboardPage() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
+              <p className="eyebrow mb-1">Échéances</p>
               <CardTitle className="flex items-center gap-2 text-base">
                 <CalendarClock className="size-4 text-primary" aria-hidden />
                 Annonces démarrant sous 14 jours
@@ -281,14 +305,14 @@ export default async function CabinetDashboardPage() {
               ) : (
                 <ul className="divide-y">
                   {upcomingPosts.map((post) => (
-                    <li key={post.id} className="py-3 first:pt-0 last:pb-0">
+                    <li key={post.id}>
                       <Link
                         href={`/cabinet/annonces/${post.id}`}
-                        className="flex items-center justify-between gap-3"
+                        className="-mx-2 flex items-center justify-between gap-3 rounded-lg px-2 py-3.5 transition-colors hover:bg-muted/50"
                       >
                         <div className="min-w-0">
                           <p className="truncate font-medium">{post.title}</p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="truncate text-sm text-muted-foreground">
                             {post.city ? `${post.city} — ` : null}
                             {post.start_date
                               ? `début le ${format(new Date(post.start_date), "d MMMM yyyy", { locale: fr })}`
@@ -296,7 +320,10 @@ export default async function CabinetDashboardPage() {
                           </p>
                         </div>
                         {post.urgent ? (
-                          <Badge className="bg-warning-soft text-warning-foreground border-warning/40" variant="outline">
+                          <Badge
+                            className="shrink-0 border-warning/40 bg-warning-soft text-warning-foreground"
+                            variant="outline"
+                          >
                             Urgent
                           </Badge>
                         ) : null}

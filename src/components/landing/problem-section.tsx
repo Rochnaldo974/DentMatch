@@ -28,9 +28,7 @@ export function ProblemSection() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="band-dark relative overflow-hidden rounded-3xl px-6 py-14 sm:px-10 sm:py-16 lg:px-14">
           <div className="max-w-2xl">
-            <p className="text-xs font-semibold tracking-widest text-verified uppercase">
-              Le constat
-            </p>
+            <p className="eyebrow text-verified!">Le constat</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance text-white sm:text-4xl">
               Trouver un remplaçant ne devrait pas être un parcours d&apos;obstacles.
             </h2>
@@ -44,7 +42,7 @@ export function ProblemSection() {
             {PROBLEMS.map((problem) => (
               <div
                 key={problem.title}
-                className="rounded-2xl border border-white/10 bg-white/5 p-6 transition-colors duration-200 hover:bg-white/8"
+                className="rounded-2xl bg-white/5 p-6 transition-colors duration-200 hover:bg-white/8"
               >
                 <problem.icon
                   className="size-5 text-verified"

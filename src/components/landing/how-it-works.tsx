@@ -74,7 +74,8 @@ export function HowItWorks() {
     <section id="fonctionnement" className="scroll-mt-28 py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-2xl">
-          <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+          <p className="eyebrow">Comment ça marche</p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
             Un parcours simple, de chaque côté du fauteuil.
           </h2>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground">
@@ -82,11 +83,8 @@ export function HowItWorks() {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-2">
-          <div
-            id="cabinets"
-            className="scroll-mt-28 rounded-3xl border bg-card p-6 shadow-[var(--shadow-card)] sm:p-8"
-          >
+        <div className="mt-14 grid gap-x-14 gap-y-12 lg:grid-cols-2">
+          <div id="cabinets" className="scroll-mt-28">
             <div className="flex items-center gap-3">
               <span className="flex size-11 items-center justify-center rounded-xl bg-secondary text-primary">
                 <Building2 className="size-5" aria-hidden="true" />
@@ -96,10 +94,7 @@ export function HowItWorks() {
             <StepList steps={CABINET_STEPS} />
           </div>
 
-          <div
-            id="remplacants"
-            className="scroll-mt-28 rounded-3xl border bg-card p-6 shadow-[var(--shadow-card)] sm:p-8"
-          >
+          <div id="remplacants" className="scroll-mt-28">
             <div className="flex items-center gap-3">
               <span className="flex size-11 items-center justify-center rounded-xl bg-accent text-accent-foreground">
                 <Stethoscope className="size-5" aria-hidden="true" />

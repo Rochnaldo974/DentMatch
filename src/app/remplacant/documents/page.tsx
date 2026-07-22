@@ -1,6 +1,7 @@
 import { requireRole } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { ErrorState } from "@/components/shared/error-state";
+import { PageHeader } from "@/components/shared/page-header";
 import { DocumentManager } from "@/components/documents/document-manager";
 import {
   PROFESSIONAL_STATUS_LABELS,
@@ -37,15 +38,11 @@ export default async function ReplacementDocumentsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Mes documents
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Pièces requises pour votre statut :{" "}
-          {PROFESSIONAL_STATUS_LABELS[status].toLowerCase()}.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Documents"
+        title="Mes documents"
+        description={`Pièces requises pour votre statut : ${PROFESSIONAL_STATUS_LABELS[status].toLowerCase()}.`}
+      />
 
       <DocumentManager
         definitions={documentTypesForStatus(status)}

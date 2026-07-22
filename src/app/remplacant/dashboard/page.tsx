@@ -24,9 +24,9 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { ErrorState } from "@/components/shared/error-state";
 import { ProfileCompletion } from "@/components/shared/profile-completion";
 import { VerificationBadge } from "@/components/shared/verification-badge";
-import {
-  requiredDocumentsComplete,
-} from "@/lib/business-rules";
+import { PageHeader } from "@/components/shared/page-header";
+import { StatCard } from "@/components/shared/stat-card";
+import { requiredDocumentsComplete } from "@/lib/business-rules";
 import {
   AVAILABILITY_TYPES,
   WORKING_DAYS,
@@ -40,31 +40,6 @@ import {
 } from "@/components/job-posts/format";
 
 export const metadata = { title: "Vue d'ensemble" };
-
-function StatCard({
-  label,
-  value,
-  icon: Icon,
-  href,
-}: {
-  label: string;
-  value: number;
-  icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
-  href: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className="rounded-xl border bg-card p-5 transition-colors hover:border-primary/40"
-    >
-      <div className="flex items-center justify-between gap-2">
-        <span className="text-sm text-muted-foreground">{label}</span>
-        <Icon className="size-4 text-muted-foreground" aria-hidden />
-      </div>
-      <p className="font-data mt-2 text-3xl font-semibold">{value}</p>
-    </Link>
-  );
-}
 
 /** Libellé lisible d'une disponibilité. */
 function availabilityLabel(a: {
@@ -159,22 +134,19 @@ export default async function ReplacementDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Bonjour, {profile.first_name}
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Voici un aperçu de votre activité de remplacement.
-          </p>
-        </div>
-        <Button asChild>
-          <Link href="/remplacant/annonces">
-            <Search aria-hidden />
-            Voir les annonces
-          </Link>
-        </Button>
-      </div>
+      <PageHeader
+        eyebrow="Vue d'ensemble"
+        title={`Bonjour, ${profile.first_name}`}
+        description="Voici un aperçu de votre activité de remplacement."
+        action={
+          <Button asChild>
+            <Link href="/remplacant/annonces">
+              <Search aria-hidden />
+              Voir les annonces
+            </Link>
+          </Button>
+        }
+      />
 
       {hasRejectedDocument || !docsComplete ? (
         <Alert variant="destructive" className="border-destructive/40">
@@ -200,45 +172,52 @@ export default async function ReplacementDashboardPage() {
         </Alert>
       ) : null}
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div
+        className="animate-rise grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
+        style={{ "--d": "40ms" } as React.CSSProperties}
+      >
         <StatCard
           label="Candidatures en attente"
           value={pendingApplications.length}
           icon={Send}
+          tone="amber"
           href="/remplacant/candidatures"
         />
         <StatCard
-          label="Candidatures acceptées"
+          label="Acceptées"
           value={acceptedApplications.length}
           icon={CheckCircle2}
+          tone="teal"
           href="/remplacant/candidatures"
         />
         <StatCard
           label="Remplacements à venir"
           value={upcomingPlacements.length}
           icon={CalendarCheck}
+          tone="primary"
           href="/remplacant/remplacements"
         />
         <StatCard
           label="Créneaux disponibles"
           value={availabilities.length}
           icon={CalendarDays}
+          tone="slate"
           href="/remplacant/disponibilites"
         />
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex flex-wrap items-center gap-2 text-base">
-            Mon profil
-            <VerificationBadge status={profile.verification_status} />
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          <ProfileCompletion
-            value={rp?.profile_completion ?? 0}
-            className="flex-1"
-          />
+      <Card
+        className="animate-rise"
+        style={{ "--d": "100ms" } as React.CSSProperties}
+      >
+        <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-end">
+          <div className="flex-1 space-y-3">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <p className="eyebrow">Mon profil</p>
+              <VerificationBadge status={profile.verification_status} />
+            </div>
+            <ProfileCompletion value={rp?.profile_completion ?? 0} />
+          </div>
           <Button variant="outline" size="sm" asChild>
             <Link href="/remplacant/profil">Voir mon profil</Link>
           </Button>
@@ -246,8 +225,16 @@ export default async function ReplacementDashboardPage() {
       </Card>
 
       {upcomingPlacements.length > 0 ? (
-        <Card>
+        <Card
+          className="animate-rise relative overflow-hidden"
+          style={{ "--d": "140ms" } as React.CSSProperties}
+        >
+          <span
+            className="absolute inset-x-0 top-0 h-1 bg-primary"
+            aria-hidden
+          />
           <CardHeader>
+            <p className="eyebrow mb-1">Agenda</p>
             <CardTitle className="flex items-center gap-2 text-base">
               <CalendarCheck className="size-4 text-primary" aria-hidden />
               Prochains remplacements
@@ -256,10 +243,10 @@ export default async function ReplacementDashboardPage() {
           <CardContent>
             <ul className="divide-y">
               {upcomingPlacements.slice(0, 3).map((p) => (
-                <li key={p.id} className="py-3 first:pt-0 last:pb-0">
+                <li key={p.id}>
                   <Link
                     href="/remplacant/remplacements"
-                    className="flex items-center justify-between gap-3"
+                    className="-mx-2 flex items-center justify-between gap-3 rounded-lg px-2 py-3.5 transition-colors hover:bg-muted/50"
                   >
                     <div className="min-w-0">
                       <p className="truncate font-medium">
@@ -267,11 +254,13 @@ export default async function ReplacementDashboardPage() {
                       </p>
                       <p className="truncate text-sm text-muted-foreground">
                         {p.cabinet_profiles?.name}
-                        {p.start_date
-                          ? ` — à partir du ${formatDateFr(p.start_date)}`
-                          : null}
                       </p>
                     </div>
+                    {p.start_date ? (
+                      <span className="font-data shrink-0 text-xs text-muted-foreground">
+                        à partir du {formatDateFr(p.start_date)}
+                      </span>
+                    ) : null}
                   </Link>
                 </li>
               ))}
@@ -280,9 +269,13 @@ export default async function ReplacementDashboardPage() {
         </Card>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div
+        className="animate-rise grid gap-6 lg:grid-cols-2"
+        style={{ "--d": "180ms" } as React.CSSProperties}
+      >
         <Card>
           <CardHeader>
+            <p className="eyebrow mb-1">Disponibilités</p>
             <CardTitle className="flex items-center gap-2 text-base">
               <CalendarDays className="size-4 text-primary" aria-hidden />
               Prochains créneaux disponibles
@@ -306,7 +299,7 @@ export default async function ReplacementDashboardPage() {
             ) : (
               <ul className="divide-y">
                 {availabilities.map((a) => (
-                  <li key={a.id} className="py-3 first:pt-0 last:pb-0">
+                  <li key={a.id} className="py-3.5 first:pt-0 last:pb-0">
                     <p className="font-medium">{availabilityLabel(a)}</p>
                     {a.notes ? (
                       <p className="text-sm text-muted-foreground">{a.notes}</p>
@@ -320,6 +313,7 @@ export default async function ReplacementDashboardPage() {
 
         <Card>
           <CardHeader>
+            <p className="eyebrow mb-1">Opportunités</p>
             <CardTitle className="flex items-center gap-2 text-base">
               <Megaphone className="size-4 text-primary" aria-hidden />
               Annonces récentes
@@ -336,10 +330,10 @@ export default async function ReplacementDashboardPage() {
             ) : (
               <ul className="divide-y">
                 {recentPosts.map((post) => (
-                  <li key={post.id} className="py-3 first:pt-0 last:pb-0">
+                  <li key={post.id}>
                     <Link
                       href={`/remplacant/annonces/${post.id}`}
-                      className="flex items-center justify-between gap-3"
+                      className="-mx-2 flex items-center justify-between gap-3 rounded-lg px-2 py-3.5 transition-colors hover:bg-muted/50"
                     >
                       <div className="min-w-0">
                         <p className="truncate font-medium">{post.title}</p>
@@ -353,7 +347,10 @@ export default async function ReplacementDashboardPage() {
                       </div>
                       <span className="flex shrink-0 items-center gap-1.5">
                         {post.specialties ? (
-                          <Badge variant="secondary" className="hidden sm:inline-flex">
+                          <Badge
+                            variant="secondary"
+                            className="hidden sm:inline-flex"
+                          >
                             {post.specialties.label}
                           </Badge>
                         ) : null}

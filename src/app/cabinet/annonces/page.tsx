@@ -4,6 +4,7 @@ import { requireRole } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { ErrorState } from "@/components/shared/error-state";
+import { PageHeader } from "@/components/shared/page-header";
 import { JobPostList } from "@/components/cabinet/job-post-list";
 
 export const metadata = { title: "Mes annonces" };
@@ -53,22 +54,19 @@ export default async function CabinetJobPostsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Mes annonces
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Créez, publiez et suivez vos annonces de remplacement.
-          </p>
-        </div>
-        <Button asChild>
-          <Link href="/cabinet/annonces/nouvelle">
-            <Plus aria-hidden />
-            Publier une annonce
-          </Link>
-        </Button>
-      </div>
+      <PageHeader
+        eyebrow="Annonces"
+        title="Mes annonces"
+        description="Créez, publiez et suivez vos annonces de remplacement."
+        action={
+          <Button asChild>
+            <Link href="/cabinet/annonces/nouvelle">
+              <Plus aria-hidden />
+              Publier une annonce
+            </Link>
+          </Button>
+        }
+      />
 
       <JobPostList posts={posts ?? []} applicationCounts={counts} />
     </div>

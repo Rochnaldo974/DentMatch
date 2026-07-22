@@ -13,6 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { EmptyState } from "@/components/shared/empty-state";
+import { PageHeader } from "@/components/shared/page-header";
 
 export const metadata: Metadata = {
   title: "Administration",
@@ -89,14 +90,11 @@ export default async function AdminPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Vue d&apos;ensemble
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Suivi de l&apos;activité de la plateforme.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Administration"
+        title="Vue d'ensemble"
+        description="Suivi de l'activité de la plateforme."
+      />
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {stats.map((stat) => (

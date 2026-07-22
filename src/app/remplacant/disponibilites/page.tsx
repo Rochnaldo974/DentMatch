@@ -10,6 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ErrorState } from "@/components/shared/error-state";
+import { PageHeader } from "@/components/shared/page-header";
 import { AvailabilityForm } from "@/components/remplacant/availability-form";
 import { AvailabilityDeleteButton } from "@/components/remplacant/availability-delete-button";
 import { formatDateRange, labelFor } from "@/components/job-posts/format";
@@ -35,15 +36,11 @@ export default async function ReplacementAvailabilitiesPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Mes disponibilités
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Déclarez vos créneaux pour faciliter la mise en relation avec les
-          cabinets.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Disponibilités"
+        title="Mes disponibilités"
+        description="Déclarez vos créneaux pour faciliter la mise en relation avec les cabinets."
+      />
 
       <div className="flex items-start gap-2.5 rounded-lg border border-primary/20 bg-secondary px-4 py-3 text-sm text-secondary-foreground">
         <Info className="mt-0.5 size-4 shrink-0" aria-hidden="true" />

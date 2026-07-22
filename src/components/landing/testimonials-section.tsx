@@ -29,22 +29,23 @@ export function TestimonialsSection() {
     <section className="py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-2xl">
-          <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+          <p className="eyebrow">Ils témoignent</p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
             Ce que la plateforme change au quotidien.
           </h2>
         </div>
 
-        <p className="mt-6 inline-flex items-start gap-2 rounded-full border bg-card px-3.5 py-2 text-xs font-medium text-muted-foreground">
+        <p className="mt-6 inline-flex items-start gap-2 rounded-full bg-card px-3.5 py-2 text-xs font-medium text-muted-foreground shadow-[var(--shadow-card)]">
           <Info className="mt-px size-3.5 shrink-0" aria-hidden="true" />
           Témoignages fictifs présentés à titre d&apos;exemple pour la
           démonstration du MVP.
         </p>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
+        <div className="mt-8 grid gap-6 md:grid-cols-3">
           {TESTIMONIALS.map((testimonial) => (
             <figure
               key={testimonial.name}
-              className="relative flex flex-col justify-between overflow-hidden rounded-2xl border bg-card p-6 pt-14 shadow-[var(--shadow-card)]"
+              className="relative flex flex-col justify-between overflow-hidden rounded-2xl bg-card p-6 pt-14 shadow-[var(--shadow-card)] ring-1 ring-black/5"
             >
               <span
                 aria-hidden="true"

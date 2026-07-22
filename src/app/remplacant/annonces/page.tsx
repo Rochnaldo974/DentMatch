@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ErrorState } from "@/components/shared/error-state";
+import { PageHeader } from "@/components/shared/page-header";
 import {
   JobPostCard,
   type JobPostCardData,
@@ -168,15 +169,11 @@ export default async function ReplacementJobPostsPage({
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Rechercher une annonce
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Trouvez le remplacement qui correspond à vos disponibilités et à
-          votre mobilité.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Recherche"
+        title="Rechercher une annonce"
+        description="Trouvez le remplacement qui correspond à vos disponibilités et à votre mobilité."
+      />
 
       {/* Barre de recherche — conserve les filtres actifs. */}
       <form method="GET" action="/remplacant/annonces" className="flex gap-2">

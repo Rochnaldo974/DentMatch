@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { DashboardShell } from "@/components/dashboard/shell";
 import { EmptyState } from "@/components/shared/empty-state";
+import { PageHeader } from "@/components/shared/page-header";
 import { NotificationItem } from "@/components/notifications/notification-item";
 import { MarkAllReadButton } from "@/components/notifications/mark-all-read-button";
 
@@ -34,17 +35,12 @@ export default async function NotificationsPage() {
   return (
     <DashboardShell profile={profile} profileHref={profileHref}>
       <div className="space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight">
-              Notifications
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              Suivez l&apos;activité de votre compte.
-            </p>
-          </div>
-          {hasUnread ? <MarkAllReadButton /> : null}
-        </div>
+        <PageHeader
+          eyebrow="Notifications"
+          title="Notifications"
+          description="Suivez l'activité de votre compte."
+          action={hasUnread ? <MarkAllReadButton /> : undefined}
+        />
 
         {items.length === 0 ? (
           <EmptyState

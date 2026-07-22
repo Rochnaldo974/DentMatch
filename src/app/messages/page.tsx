@@ -7,6 +7,7 @@ import { requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { EmptyState } from "@/components/shared/empty-state";
+import { PageHeader } from "@/components/shared/page-header";
 
 export const metadata: Metadata = {
   title: "Messages",
@@ -113,13 +114,11 @@ export default async function MessagesPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Messages</h1>
-        <p className="text-sm text-muted-foreground">
-          Échangez avec vos interlocuteurs autour des annonces et des
-          remplacements.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Messagerie"
+        title="Messages"
+        description="Échangez avec vos interlocuteurs autour des annonces et des remplacements."
+      />
 
       {items.length === 0 ? (
         <EmptyState

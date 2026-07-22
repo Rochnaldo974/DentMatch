@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ErrorState } from "@/components/shared/error-state";
+import { PageHeader } from "@/components/shared/page-header";
 import { ProfileCompletion } from "@/components/shared/profile-completion";
 import { ProfileAdminForm } from "@/components/cabinet/profile-admin-form";
 import { ProfilePresentationForm } from "@/components/cabinet/profile-presentation-form";
@@ -45,14 +46,11 @@ export default async function CabinetProfilePage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Profil du cabinet
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Ces informations sont visibles par les remplaçants sur vos annonces.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Profil"
+        title="Profil du cabinet"
+        description="Ces informations sont visibles par les remplaçants sur vos annonces."
+      />
 
       <Card>
         <CardContent>

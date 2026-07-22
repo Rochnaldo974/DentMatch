@@ -1,22 +1,26 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ElementType } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Apparition en douceur au scroll (IntersectionObserver).
- * `prefers-reduced-motion` est respecté globalement (transitions annulées).
+ * Apparition en douceur au scroll (IntersectionObserver), révélée une seule fois.
+ * `delay` décale l'entrée (cascade) ; `as` permet un rendu autre que <div>
+ * (ex. cellule de grille, <li>). `prefers-reduced-motion` est respecté
+ * globalement (transitions annulées dans globals.css).
  */
 export function Reveal({
   children,
   className,
   delay = 0,
+  as: Tag = "div",
 }: {
   children: React.ReactNode;
   className?: string;
   delay?: number;
+  as?: ElementType;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -36,7 +40,7 @@ export function Reveal({
   }, []);
 
   return (
-    <div
+    <Tag
       ref={ref}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
       className={cn(
@@ -46,6 +50,6 @@ export function Reveal({
       )}
     >
       {children}
-    </div>
+    </Tag>
   );
 }

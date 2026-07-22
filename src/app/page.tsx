@@ -1,6 +1,5 @@
 import { LandingHeader } from "@/components/landing/header";
 import { Hero } from "@/components/landing/hero";
-import { TrustBar } from "@/components/landing/trust-bar";
 import { ProblemSection } from "@/components/landing/problem-section";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { FeaturesSection } from "@/components/landing/features-section";
@@ -17,16 +16,14 @@ export default function Page() {
       <LandingHeader />
       <main>
         <Hero />
-        <TrustBar />
         <Reveal>
           <ProblemSection />
         </Reveal>
         <Reveal>
           <HowItWorks />
         </Reveal>
-        <Reveal>
-          <FeaturesSection />
-        </Reveal>
+        {/* FeaturesSection orchestre ses propres entrées en cascade. */}
+        <FeaturesSection />
         <Reveal>
           <SecuritySection />
         </Reveal>

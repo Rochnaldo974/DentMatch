@@ -38,7 +38,8 @@ export function SecuritySection() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
           <div>
-            <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+            <p className="eyebrow">Sécurité &amp; confidentialité</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
               La confiance se construit sur des bases solides.
             </h2>
             <p className="mt-4 text-base leading-relaxed text-muted-foreground">
@@ -56,8 +57,8 @@ export function SecuritySection() {
             </div>
           </div>
 
-          <div className="rounded-3xl border bg-card p-6 shadow-[var(--shadow-card)] sm:p-8">
-            <ul className="divide-y">
+          <div>
+            <ul className="divide-y divide-border/70">
               {SECURITY_POINTS.map((point) => (
                 <li
                   key={point.title}
