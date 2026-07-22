@@ -7,7 +7,20 @@ export const metadata: Metadata = {
   title: "Créer un compte",
 };
 
-export default function InscriptionPage() {
+export default async function InscriptionPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ role?: string }>;
+}) {
+  const { role } = await searchParams;
+  // Rôle présélectionné depuis la landing (CTA ou popup de choix).
+  const defaultRole =
+    role === "cabinet"
+      ? ("cabinet" as const)
+      : role === "remplacant"
+        ? ("replacement_dentist" as const)
+        : undefined;
+
   return (
     <div className="space-y-6">
       <div className="space-y-1.5">
@@ -19,7 +32,7 @@ export default function InscriptionPage() {
         </p>
       </div>
 
-      <SignUpForm />
+      <SignUpForm defaultRole={defaultRole} />
 
       <p className="text-center text-sm text-muted-foreground">
         Déjà inscrit ?{" "}

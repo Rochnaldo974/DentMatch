@@ -36,7 +36,11 @@ const ROLE_OPTIONS = [
   },
 ] as const;
 
-export function SignUpForm() {
+export function SignUpForm({
+  defaultRole,
+}: {
+  defaultRole?: SignUpInput["role"];
+}) {
   const [serverError, setServerError] = useState<string | null>(null);
   const [successInfo, setSuccessInfo] = useState<string | null>(null);
 
@@ -48,7 +52,7 @@ export function SignUpForm() {
       email: "",
       password: "",
       confirmPassword: "",
-      role: undefined as unknown as SignUpInput["role"],
+      role: defaultRole ?? (undefined as unknown as SignUpInput["role"]),
       acceptTerms: false as unknown as true,
     },
   });

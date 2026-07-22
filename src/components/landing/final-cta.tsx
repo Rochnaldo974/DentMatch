@@ -21,7 +21,7 @@ export function FinalCta() {
                 className="rounded-xl bg-white bg-none text-primary shadow-none hover:bg-white/90"
                 asChild
               >
-                <Link href="/inscription">Publier un remplacement</Link>
+                <Link href="/inscription?role=cabinet">Publier un remplacement</Link>
               </Button>
               <Button
                 size="lg"
@@ -29,7 +29,7 @@ export function FinalCta() {
                 className="rounded-xl border-white/25 bg-transparent text-white hover:bg-white/10 hover:text-white"
                 asChild
               >
-                <Link href="/inscription">Découvrir les annonces</Link>
+                <Link href="/inscription?role=remplacant">Découvrir les annonces</Link>
               </Button>
             </div>
           </div>

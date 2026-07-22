@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import { Logo } from "@/components/shared/logo";
@@ -12,6 +12,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { RoleChoiceDialog } from "@/components/landing/role-choice-dialog";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -21,23 +22,44 @@ const NAV_LINKS = [
   { href: "#securite", label: "Sécurité" },
 ] as const;
 
+/**
+ * Navbar flottante : discrète pendant la lecture — elle s'efface quand on
+ * descend et réapparaît dès qu'on remonte.
+ */
 export function LandingHeader() {
+  const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const lastY = useRef(0);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 8);
+      // Cache en descendant (au-delà du hero), montre en remontant.
+      if (y > lastY.current + 4 && y > 160) {
+        setHidden(true);
+      } else if (y < lastY.current - 4 || y <= 160) {
+        setHidden(false);
+      }
+      lastY.current = y;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <header className="fixed inset-x-0 top-3 z-40 px-3 sm:top-4 sm:px-6">
+    <header
+      className={cn(
+        "fixed inset-x-0 top-3 z-40 px-3 transition-transform duration-300 ease-out sm:top-4 sm:px-6",
+        hidden && !open && "-translate-y-[150%]",
+      )}
+    >
       <div
         className={cn(
-          "glass mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 rounded-full pl-4 pr-2 transition-shadow duration-300 sm:pl-5",
-          scrolled && "shadow-[var(--shadow-float)]!"
+          "glass mx-auto flex h-13 max-w-5xl items-center justify-between gap-3 rounded-full pl-4 pr-2 transition-shadow duration-300 sm:pl-5",
+          scrolled && "shadow-[var(--shadow-float)]!",
         )}
       >
         <Logo />
@@ -61,9 +83,11 @@ export function LandingHeader() {
           <Button variant="ghost" className="rounded-full" asChild>
             <Link href="/connexion">Se connecter</Link>
           </Button>
-          <Button className="rounded-full" asChild>
-            <Link href="/inscription">Tester gratuitement</Link>
-          </Button>
+          <RoleChoiceDialog
+            trigger={
+              <Button className="rounded-full">Tester gratuitement</Button>
+            }
+          />
         </div>
 
         <Sheet open={open} onOpenChange={setOpen}>
@@ -101,9 +125,11 @@ export function LandingHeader() {
               <Button variant="outline" className="rounded-full" asChild>
                 <Link href="/connexion">Se connecter</Link>
               </Button>
-              <Button className="rounded-full" asChild>
-                <Link href="/inscription">Tester gratuitement</Link>
-              </Button>
+              <RoleChoiceDialog
+                trigger={
+                  <Button className="rounded-full">Tester gratuitement</Button>
+                }
+              />
             </div>
           </SheetContent>
         </Sheet>

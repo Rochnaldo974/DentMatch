@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { Building2, Stethoscope } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Building2, Stethoscope } from "lucide-react";
 import { APP_DESCRIPTION, APP_TAGLINE } from "@/lib/constants";
 import { DashboardPreview } from "./dashboard-preview";
 
@@ -21,9 +20,36 @@ function HeroTitle() {
   );
 }
 
+/** CTA géant du hero : une couleur franche par audience. */
+function HeroCta({
+  href,
+  icon: Icon,
+  children,
+  className,
+}: {
+  href: string;
+  icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
+  children: React.ReactNode;
+  className: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className={`group inline-flex h-14 items-center justify-center gap-2.5 rounded-2xl px-7 text-base font-semibold shadow-[var(--shadow-float)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-card-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 ${className}`}
+    >
+      <Icon className="size-5" aria-hidden />
+      {children}
+      <ArrowRight
+        className="size-4.5 transition-transform duration-200 group-hover:translate-x-1"
+        aria-hidden
+      />
+    </Link>
+  );
+}
+
 export function Hero() {
   return (
-    <section className="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-24">
+    <section className="relative overflow-hidden pt-28 pb-20 sm:pt-36 sm:pb-24">
       {/* Calques décoratifs : halos + trame de points */}
       <div aria-hidden="true" className="hero-glow absolute inset-0" />
       <div aria-hidden="true" className="dot-grid absolute inset-0" />
@@ -35,7 +61,7 @@ export function Hero() {
               aria-hidden="true"
               className="size-2 animate-pulse rounded-full bg-verified"
             />
-            MVP ouvert aux tests — France &amp; outre-mer
+            MVP ouvert aux tests — La Réunion
           </p>
 
           <h1 className="mt-6 text-5xl font-semibold tracking-tight leading-[1.05] text-balance sm:text-6xl lg:text-7xl">
@@ -46,29 +72,29 @@ export function Hero() {
             {APP_DESCRIPTION}
           </p>
 
-          <div className="mt-9 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-            <Button size="lg" className="rounded-xl" asChild>
-              <Link href="/inscription">
-                <Building2 />
-                Je cherche un remplaçant
-              </Link>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="rounded-xl bg-card"
-              asChild
+          <div className="mt-10 flex w-full flex-col gap-3.5 sm:w-auto sm:flex-row">
+            <HeroCta
+              href="/inscription?role=cabinet"
+              icon={Building2}
+              className="bg-linear-to-b from-primary to-primary/85 text-primary-foreground outline-primary"
             >
-              <Link href="/inscription">
-                <Stethoscope />
-                Je cherche un cabinet
-              </Link>
-            </Button>
+              Je cherche un remplaçant
+            </HeroCta>
+            <HeroCta
+              href="/inscription?role=remplacant"
+              icon={Stethoscope}
+              className="bg-linear-to-b from-verified to-verified/85 text-verified-foreground outline-verified"
+            >
+              Je cherche un cabinet
+            </HeroCta>
           </div>
+          <p className="mt-4 text-xs text-muted-foreground">
+            Gratuit pendant la phase de test · sans engagement
+          </p>
         </div>
 
         {/* Preuve produit */}
-        <div className="mx-auto mt-16 max-w-4xl animate-in px-2 fade-in-0 slide-in-from-bottom-6 duration-700 ease-out sm:mt-20 sm:px-0">
+        <div className="mx-auto mt-16 max-w-3xl animate-in px-2 fade-in-0 slide-in-from-bottom-6 duration-700 ease-out sm:mt-20 sm:px-0">
           <DashboardPreview />
         </div>
       </div>

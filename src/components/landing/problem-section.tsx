@@ -1,48 +1,24 @@
-import {
-  CalendarX,
-  Hourglass,
-  MessagesSquare,
-  ShieldQuestion,
-  Shuffle,
-  Timer,
-} from "lucide-react";
+import { ShieldQuestion, Shuffle, Timer } from "lucide-react";
 
+/** Trois problèmes, pas six : l'essentiel, sans noyer le lecteur. */
 const PROBLEMS = [
   {
     icon: Shuffle,
-    title: "Annonces dispersées",
+    title: "Annonces éparpillées",
     description:
-      "Les offres de remplacement circulent sur des canaux multiples, sans espace de référence.",
-  },
-  {
-    icon: MessagesSquare,
-    title: "Groupes de discussion désorganisés",
-    description:
-      "Les messages importants se perdent dans des fils de conversation sans structure.",
+      "Groupes WhatsApp, bouche-à-oreille, petites annonces : rien n'est centralisé.",
   },
   {
     icon: ShieldQuestion,
-    title: "Profils difficiles à vérifier",
+    title: "Profils invérifiables",
     description:
-      "Diplômes, inscription et expérience sont rarement vérifiables avant le premier contact.",
-  },
-  {
-    icon: Hourglass,
-    title: "Réponses tardives",
-    description:
-      "Sans suivi centralisé, les échanges traînent et les remplacements se décident au dernier moment.",
-  },
-  {
-    icon: CalendarX,
-    title: "Disponibilités invisibles",
-    description:
-      "Impossible de savoir qui est réellement disponible sur les dates recherchées.",
+      "Diplômes, inscription, disponibilités : impossible à vérifier avant le premier contact.",
   },
   {
     icon: Timer,
-    title: "Temps perdu par les cabinets",
+    title: "Temps perdu",
     description:
-      "Relances, tris manuels et allers-retours mobilisent un temps précieux au détriment des soins.",
+      "Relances, tris et allers-retours — au détriment des soins.",
   },
 ] as const;
 

@@ -9,6 +9,7 @@ import { TestimonialsSection } from "@/components/landing/testimonials-section";
 import { FaqSection } from "@/components/landing/faq-section";
 import { FinalCta } from "@/components/landing/final-cta";
 import { LandingFooter } from "@/components/landing/footer";
+import { Reveal } from "@/components/landing/reveal";
 
 export default function Page() {
   return (
@@ -17,13 +18,27 @@ export default function Page() {
       <main>
         <Hero />
         <TrustBar />
-        <ProblemSection />
-        <HowItWorks />
-        <FeaturesSection />
-        <SecuritySection />
-        <TestimonialsSection />
-        <FaqSection />
-        <FinalCta />
+        <Reveal>
+          <ProblemSection />
+        </Reveal>
+        <Reveal>
+          <HowItWorks />
+        </Reveal>
+        <Reveal>
+          <FeaturesSection />
+        </Reveal>
+        <Reveal>
+          <SecuritySection />
+        </Reveal>
+        <Reveal>
+          <TestimonialsSection />
+        </Reveal>
+        <Reveal>
+          <FaqSection />
+        </Reveal>
+        <Reveal>
+          <FinalCta />
+        </Reveal>
       </main>
       <LandingFooter />
     </>
