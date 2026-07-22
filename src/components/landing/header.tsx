@@ -66,15 +66,20 @@ export function LandingHeader() {
 
         <nav
           aria-label="Navigation principale"
-          className="hidden items-center gap-1 rounded-full bg-muted/60 p-1 lg:flex"
+          className="hidden items-center gap-6 lg:flex"
         >
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="rounded-full px-3.5 py-1.5 text-sm font-medium whitespace-nowrap text-foreground/70 transition-colors hover:bg-card hover:text-foreground hover:shadow-xs"
+              className="group relative py-2 text-sm font-medium whitespace-nowrap text-foreground/65 transition-colors duration-200 hover:text-foreground"
             >
               {link.label}
+              {/* Trait turquoise qui glisse sous le lien au survol */}
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 -bottom-0.5 mx-auto h-0.5 w-0 rounded-full bg-verified transition-all duration-300 ease-out group-hover:w-full"
+              />
             </a>
           ))}
         </nav>
