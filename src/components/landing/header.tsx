@@ -16,9 +16,9 @@ import { RoleChoiceDialog } from "@/components/landing/role-choice-dialog";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
-  { href: "#fonctionnement", label: "Comment ça marche" },
-  { href: "#cabinets", label: "Pour les cabinets" },
-  { href: "#remplacants", label: "Pour les remplaçants" },
+  { href: "#fonctionnement", label: "Fonctionnement" },
+  { href: "#cabinets", label: "Cabinets" },
+  { href: "#remplacants", label: "Remplaçants" },
   { href: "#securite", label: "Sécurité" },
 ] as const;
 
@@ -66,13 +66,13 @@ export function LandingHeader() {
 
         <nav
           aria-label="Navigation principale"
-          className="hidden items-center gap-0.5 lg:flex"
+          className="hidden items-center gap-1 rounded-full bg-muted/60 p-1 lg:flex"
         >
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="rounded-full px-3.5 py-2 text-sm font-medium text-foreground/70 transition-colors hover:text-foreground"
+              className="rounded-full px-3.5 py-1.5 text-sm font-medium whitespace-nowrap text-foreground/70 transition-colors hover:bg-card hover:text-foreground hover:shadow-xs"
             >
               {link.label}
             </a>

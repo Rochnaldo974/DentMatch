@@ -22,7 +22,7 @@ function HeroTitle() {
   );
 }
 
-/** CTA géant du hero : une couleur franche par audience. */
+/** CTA géant du hero : une couleur franche par audience, largeurs identiques. */
 function HeroCta({
   href,
   icon: Icon,
@@ -37,12 +37,14 @@ function HeroCta({
   return (
     <Link
       href={href}
-      className={`group inline-flex h-14 items-center justify-center gap-2.5 rounded-2xl px-7 text-base font-semibold shadow-[var(--shadow-float)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-card-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 ${className}`}
+      className={`group flex h-14 w-full items-center justify-between gap-2 rounded-2xl px-4 text-sm font-semibold whitespace-nowrap shadow-[var(--shadow-float)] ring-1 ring-white/15 ring-inset transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-card-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 ${className}`}
     >
-      <Icon className="size-5" aria-hidden />
-      {children}
+      <span className="flex items-center gap-2.5">
+        <Icon className="size-5" aria-hidden />
+        {children}
+      </span>
       <ArrowRight
-        className="size-4.5 transition-transform duration-200 group-hover:translate-x-1"
+        className="size-4.5 shrink-0 transition-transform duration-200 group-hover:translate-x-1"
         aria-hidden
       />
     </Link>
@@ -81,7 +83,7 @@ export function Hero() {
               className="animate-rise mt-10"
               style={{ "--d": "340ms" } as CSSProperties}
             >
-              <div className="flex w-full flex-col gap-3.5 sm:w-auto sm:flex-row sm:flex-wrap">
+              <div className="grid w-full max-w-xl gap-3.5 sm:grid-cols-2">
                 <HeroCta
                   href="/inscription?role=cabinet"
                   icon={Building2}
