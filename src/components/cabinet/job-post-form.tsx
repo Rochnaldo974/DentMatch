@@ -58,6 +58,7 @@ import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { createJobPost, updateJobPost } from "@/app/actions/job-posts";
 import { jobPostSchema, type JobPostInput } from "@/lib/validation/job-post";
 import {
+  COMPENSATION_GUIDANCE,
   COMPENSATION_TYPES,
   CONTRACT_TYPES,
   EQUIPMENT,
@@ -312,6 +313,12 @@ export function JobPostForm({
   });
 
   const { isSubmitting } = form.formState;
+
+  // Fourchettes indicatives selon le type de rémunération sélectionné.
+  const compensationType = form.watch("compensationType");
+  const compensationGuidance = COMPENSATION_GUIDANCE[compensationType];
+  const showCompensationValue =
+    compensationType !== "a_discuter";
 
   async function submit(values: JobPostInput, publish: boolean) {
     const result = jobPostId
@@ -775,31 +782,45 @@ export function JobPostForm({
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="compensationValue"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Valeur (facultatif)</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      min={0}
-                      placeholder="Ex. : 50"
-                      value={field.value ?? ""}
-                      onChange={(e) =>
-                        field.onChange(
-                          e.target.value === ""
-                            ? undefined
-                            : Number(e.target.value),
-                        )
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {showCompensationValue ? (
+              <FormField
+                control={form.control}
+                name="compensationValue"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Montant</FormLabel>
+                    <div className="flex items-center gap-2">
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min={0}
+                          placeholder="Ex. : 50"
+                          value={field.value ?? ""}
+                          onChange={(e) =>
+                            field.onChange(
+                              e.target.value === ""
+                                ? undefined
+                                : Number(e.target.value),
+                            )
+                          }
+                        />
+                      </FormControl>
+                      {compensationGuidance ? (
+                        <span className="shrink-0 text-sm text-muted-foreground">
+                          {compensationGuidance.unit}
+                        </span>
+                      ) : null}
+                    </div>
+                    {compensationGuidance ? (
+                      <p className="text-xs text-muted-foreground">
+                        {compensationGuidance.market}
+                      </p>
+                    ) : null}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : null}
             <FormField
               control={form.control}
               name="compensationDetails"

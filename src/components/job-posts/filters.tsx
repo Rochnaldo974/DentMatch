@@ -25,16 +25,23 @@ import {
   CONTRACT_TYPES,
   REGIONS,
   REPLACEMENT_TYPES,
+  REUNION_COMMUNES,
   SPECIALTIES,
   STRUCTURE_TYPES,
   TERRITORIES,
 } from "@/lib/data/reference";
+import { LAUNCH_MARKET } from "@/lib/constants";
+
+// Marché de lancement Réunion : filtre « Commune » à la place des filtres
+// nationaux « Région » / « Département » (code conservé pour la suite).
+const IS_REUNION_MARKET = LAUNCH_MARKET === "reunion";
 
 export type JobPostFilterValues = {
   q?: string;
   territoire?: string;
   region?: string;
   departement?: string;
+  ville?: string;
   debut?: string;
   fin?: string;
   specialite?: string;
@@ -108,26 +115,41 @@ export function JobPostFiltersForm({
         />
       </div>
 
-      <div className="space-y-1.5">
-        <Label htmlFor={`${idPrefix}-region`}>Région</Label>
-        <NativeSelect
-          id={`${idPrefix}-region`}
-          name="region"
-          defaultValue={values.region}
-          placeholder="Toutes les régions"
-          options={REGIONS.map((r) => ({ value: r, label: r }))}
-        />
-      </div>
+      {IS_REUNION_MARKET ? (
+        <div className="space-y-1.5">
+          <Label htmlFor={`${idPrefix}-ville`}>Commune</Label>
+          <NativeSelect
+            id={`${idPrefix}-ville`}
+            name="ville"
+            defaultValue={values.ville}
+            placeholder="Toutes les communes"
+            options={REUNION_COMMUNES.map((c) => ({ value: c, label: c }))}
+          />
+        </div>
+      ) : (
+        <>
+          <div className="space-y-1.5">
+            <Label htmlFor={`${idPrefix}-region`}>Région</Label>
+            <NativeSelect
+              id={`${idPrefix}-region`}
+              name="region"
+              defaultValue={values.region}
+              placeholder="Toutes les régions"
+              options={REGIONS.map((r) => ({ value: r, label: r }))}
+            />
+          </div>
 
-      <div className="space-y-1.5">
-        <Label htmlFor={`${idPrefix}-departement`}>Département</Label>
-        <Input
-          id={`${idPrefix}-departement`}
-          name="departement"
-          defaultValue={values.departement}
-          placeholder="Ex. : 974, Rhône…"
-        />
-      </div>
+          <div className="space-y-1.5">
+            <Label htmlFor={`${idPrefix}-departement`}>Département</Label>
+            <Input
+              id={`${idPrefix}-departement`}
+              name="departement"
+              defaultValue={values.departement}
+              placeholder="Ex. : 974, Rhône…"
+            />
+          </div>
+        </>
+      )}
 
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1.5">

@@ -1276,6 +1276,10 @@ export type Database = {
         Args: { p_application_id: string }
         Returns: string
       }
+      invite_candidate: {
+        Args: { p_job_post_id: string; p_candidate_user_id: string }
+        Returns: undefined
+      }
       is_admin: { Args: never; Returns: boolean }
       is_conversation_member: {
         Args: { p_conversation_id: string }

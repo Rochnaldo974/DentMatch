@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { COMPENSATION_GUIDANCE } from "@/lib/data/reference";
 
 /** Schéma complet d'une annonce (publication). */
 export const jobPostSchema = z
@@ -63,7 +64,31 @@ export const jobPostSchema = z
         "La date limite de candidature est déjà passée — choisissez une date future",
       path: ["applicationDeadline"],
     },
-  );
+  )
+  // Garde-fous de vraisemblance sur la rémunération (fourchettes du marché).
+  .superRefine((data, ctx) => {
+    const guidance = COMPENSATION_GUIDANCE[data.compensationType];
+    if (!guidance) return; // « à discuter » : pas de montant requis
+
+    if (data.compensationValue === undefined || data.compensationValue <= 0) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Indiquez un montant pour ce type de rémunération",
+        path: ["compensationValue"],
+      });
+      return;
+    }
+    if (
+      data.compensationValue < guidance.min ||
+      data.compensationValue > guidance.max
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        message: `Montant hors fourchette réaliste (${guidance.min} à ${guidance.max} ${guidance.unit}). ${guidance.market}`,
+        path: ["compensationValue"],
+      });
+    }
+  });
 
 export type JobPostInput = z.infer<typeof jobPostSchema>;
 

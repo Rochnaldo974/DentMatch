@@ -48,6 +48,72 @@ export const OVERSEAS_TERRITORIES = TERRITORIES.filter(
   (t) => t !== "France métropolitaine",
 );
 
+/* ------------------------------ La Réunion --------------------------------- */
+/** Communes de La Réunion (marché de lancement). */
+export const REUNION_COMMUNES = [
+  "Saint-Denis",
+  "Sainte-Marie",
+  "Sainte-Suzanne",
+  "Saint-André",
+  "Bras-Panon",
+  "Salazie",
+  "Saint-Benoît",
+  "La Plaine-des-Palmistes",
+  "Sainte-Rose",
+  "Saint-Philippe",
+  "Saint-Joseph",
+  "Petite-Île",
+  "Saint-Pierre",
+  "Le Tampon",
+  "Entre-Deux",
+  "Saint-Louis",
+  "Cilaos",
+  "L'Étang-Salé",
+  "Les Avirons",
+  "Saint-Leu",
+  "Trois-Bassins",
+  "Saint-Paul",
+  "Le Port",
+  "La Possession",
+] as const;
+
+/** Zones de mobilité de l'île (utilisées à la place des régions nationales). */
+export const REUNION_ZONES: Option[] = [
+  { value: "nord", label: "Nord (Saint-Denis, Sainte-Marie, Sainte-Suzanne)" },
+  { value: "est", label: "Est (Saint-André, Saint-Benoît, Bras-Panon…)" },
+  { value: "ouest", label: "Ouest (Saint-Paul, Le Port, Saint-Leu…)" },
+  { value: "sud", label: "Sud (Saint-Pierre, Le Tampon, Saint-Joseph…)" },
+  { value: "hauts", label: "Les Hauts et cirques (Cilaos, Salazie, Plaine-des-Palmistes)" },
+];
+
+/**
+ * Fourchettes de rémunération indicatives (marché du remplacement dentaire).
+ * Affichées dans le formulaire d'annonce — purement informatives.
+ */
+export const COMPENSATION_GUIDANCE: Record<
+  string,
+  { min: number; max: number; unit: string; market: string }
+> = {
+  retrocession: {
+    min: 10,
+    max: 90,
+    unit: "%",
+    market: "Pratique courante : rétrocession de 40 à 60 % des honoraires.",
+  },
+  forfait_journalier: {
+    min: 100,
+    max: 2000,
+    unit: "€ / jour",
+    market: "Pratique courante : forfait de 300 à 600 € par jour.",
+  },
+  salaire: {
+    min: 1500,
+    max: 20000,
+    unit: "€ / mois",
+    market: "Pratique courante : 4 000 à 8 000 € brut mensuel selon l'expérience.",
+  },
+};
+
 export const REGIONS = [
   "Auvergne-Rhône-Alpes",
   "Bourgogne-Franche-Comté",

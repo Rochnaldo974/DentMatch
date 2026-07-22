@@ -16,6 +16,7 @@ import { VerificationBadge } from "@/components/shared/verification-badge";
 import { ProfileCompletion } from "@/components/shared/profile-completion";
 import { finishCabinetOnboarding } from "@/app/actions/onboarding-cabinet";
 import { CABINET_DOCUMENT_TYPES } from "@/lib/data/reference";
+import { APP_NAME } from "@/lib/constants";
 import {
   computeProfileCompletion,
   requiredDocumentsComplete,
@@ -116,19 +117,19 @@ export function StepConfirmation({
         </div>
 
         {docsComplete ? (
-          <div className="flex flex-col items-center gap-3 rounded-xl border border-verified/25 bg-verified-soft p-6 text-center">
-            <VerificationBadge status="verified" />
-            <p className="text-lg font-semibold">Profil test vérifié</p>
+          <div className="flex flex-col items-center gap-3 rounded-xl border border-warning/40 bg-warning-soft p-6 text-center">
+            <VerificationBadge status="pending" />
+            <p className="text-lg font-semibold">Documents transmis</p>
             <p className="text-sm text-muted-foreground">
-              Tous vos documents obligatoires sont fournis. Votre profil de
-              test sera marqué comme vérifié dès la finalisation.
+              L&apos;équipe {APP_NAME} vérifie votre profil sous 24 à 48 h.
+              Vous serez notifié dès validation.
             </p>
           </div>
         ) : (
           <Alert>
             <TriangleAlert aria-hidden="true" />
             <AlertTitle>
-              Le badge « Profil test vérifié » ne sera pas attribué
+              La vérification de votre profil ne pourra pas démarrer
             </AlertTitle>
             <AlertDescription>
               <p>

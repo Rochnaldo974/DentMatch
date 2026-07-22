@@ -309,11 +309,13 @@ export async function finishCabinetOnboarding(): Promise<Result> {
     documents ?? [],
   );
 
+  // La vérification est MANUELLE : les documents fournis placent le profil
+  // « en attente », un administrateur DentMatch attribue le badge vérifié.
   const { error } = await supabase
     .from("profiles")
     .update({
       onboarding_completed: true,
-      verification_status: docsComplete ? "verified" : "pending",
+      verification_status: docsComplete ? "pending" : "unverified",
     })
     .eq("id", userId);
 
@@ -323,8 +325,8 @@ export async function finishCabinetOnboarding(): Promise<Result> {
     await supabase.from("notifications").insert({
       user_id: userId,
       type: "profile_verified",
-      title: "Profil test vérifié",
-      body: "Tous vos documents obligatoires sont fournis. Votre profil de test est vérifié.",
+      title: "Documents reçus — vérification en cours",
+      body: "Tous vos documents obligatoires sont fournis. L'équipe DentMatch les examine : vous serez notifié dès que votre profil sera vérifié.",
     });
   }
 

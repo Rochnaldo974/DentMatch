@@ -26,6 +26,7 @@ const FILTER_KEYS = [
   "territoire",
   "region",
   "departement",
+  "ville",
   "debut",
   "fin",
   "specialite",
@@ -108,6 +109,7 @@ export default async function ReplacementJobPostsPage({
   if (values.territoire) query = query.eq("territory", values.territoire);
   if (values.region) query = query.eq("region", values.region);
   if (values.departement) query = query.eq("department", values.departement);
+  if (values.ville) query = query.eq("city", values.ville);
   if (values.debut) query = query.gte("start_date", values.debut);
   if (values.fin) query = query.lte("end_date", values.fin);
   if (values.specialite) {

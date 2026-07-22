@@ -72,6 +72,7 @@ describe("jobPostSchema", () => {
     startDate: inDays(30),
     endDate: inDays(60),
     compensationType: "retrocession",
+    compensationValue: 55,
     description:
       "Remplacement d'un mois dans un cabinet moderne, patientèle fidèle et équipe accueillante.",
   };
@@ -129,12 +130,38 @@ describe("jobPostSchema", () => {
     ).toBe(false);
   });
 
-  it("accepte une rémunération sans montant (compensationValue absent)", () => {
-    const result = jobPostSchema.safeParse({
-      ...valid,
-      compensationType: "a_discuter",
-    });
-    expect(result.success).toBe(true);
+  it("accepte une rémunération sans montant uniquement pour « à discuter »", () => {
+    const withoutValue: Record<string, unknown> = { ...valid };
+    delete withoutValue.compensationValue;
+    expect(
+      jobPostSchema.safeParse({ ...withoutValue, compensationType: "a_discuter" })
+        .success,
+    ).toBe(true);
+    // Rétrocession sans montant : refusé.
+    expect(jobPostSchema.safeParse(withoutValue).success).toBe(false);
+  });
+
+  it("rejette un montant hors fourchette réaliste (garde-fous marché)", () => {
+    // Forfait de 50 € / jour : irréaliste, refusé.
+    expect(
+      jobPostSchema.safeParse({
+        ...valid,
+        compensationType: "forfait_journalier",
+        compensationValue: 50,
+      }).success,
+    ).toBe(false);
+    // Rétrocession 150 % : impossible, refusée.
+    expect(
+      jobPostSchema.safeParse({ ...valid, compensationValue: 150 }).success,
+    ).toBe(false);
+    // Forfait de 450 € / jour : réaliste, accepté.
+    expect(
+      jobPostSchema.safeParse({
+        ...valid,
+        compensationType: "forfait_journalier",
+        compensationValue: 450,
+      }).success,
+    ).toBe(true);
   });
 });
 

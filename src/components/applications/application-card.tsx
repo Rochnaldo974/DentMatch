@@ -11,6 +11,7 @@ import {
   Languages,
   MapPin,
   MessageSquare,
+  Phone,
   UserRound,
   XCircle,
 } from "lucide-react";
@@ -106,6 +107,9 @@ export function ApplicationCard({ app }: { app: CabinetApplicationItem }) {
     : null;
   const jobDatesFr = datesFr(app.jobPost.startDate, app.jobPost.endDate);
   const canDecide = ["submitted", "viewed", "shortlisted"].includes(app.status);
+  // Le téléphone du candidat n'est communiqué qu'après acceptation.
+  const visiblePhone =
+    app.status === "accepted" ? app.applicant.phone : null;
 
   function handleProfileOpenChange(open: boolean) {
     setProfileOpen(open);
@@ -157,6 +161,15 @@ export function ApplicationCard({ app }: { app: CabinetApplicationItem }) {
                   <MapPin className="size-3.5" aria-hidden />
                   {rp.city}
                 </span>
+              ) : null}
+              {visiblePhone ? (
+                <a
+                  href={`tel:${visiblePhone}`}
+                  className="inline-flex items-center gap-1 underline-offset-4 hover:underline"
+                >
+                  <Phone className="size-3.5" aria-hidden />
+                  {visiblePhone}
+                </a>
               ) : null}
             </div>
           </div>
@@ -247,6 +260,22 @@ export function ApplicationCard({ app }: { app: CabinetApplicationItem }) {
                   <div>
                     <p className="text-xs text-muted-foreground">Ville</p>
                     <p>{rp.city}</p>
+                  </div>
+                ) : null}
+                {visiblePhone ? (
+                  <div>
+                    <p className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <Phone className="size-3" aria-hidden />
+                      Téléphone
+                    </p>
+                    <p>
+                      <a
+                        href={`tel:${visiblePhone}`}
+                        className="underline-offset-4 hover:underline"
+                      >
+                        {visiblePhone}
+                      </a>
+                    </p>
                   </div>
                 ) : null}
                 {rp?.languages && rp.languages.length > 0 ? (

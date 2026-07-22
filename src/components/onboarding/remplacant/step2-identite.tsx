@@ -33,7 +33,8 @@ import {
   replacementStep2Schema,
   type ReplacementStep2Input,
 } from "@/lib/validation/onboarding-remplacant";
-import { TERRITORIES } from "@/lib/data/reference";
+import { REUNION_COMMUNES, TERRITORIES } from "@/lib/data/reference";
+import { DEFAULT_TERRITORY } from "@/lib/constants";
 import type { ReplacementOnboardingData } from "@/components/onboarding/types";
 import { StepFooter, StepHeader } from "./step-shell";
 
@@ -67,10 +68,14 @@ export function StepIdentite({
       addressLine: rp?.address_line ?? "",
       postalCode: rp?.postal_code ?? "",
       city: rp?.city ?? "",
-      territory: rp?.territory ?? "",
+      // Marché de lancement : La Réunion par défaut.
+      territory: rp?.territory || DEFAULT_TERRITORY,
       bio: rp?.bio ?? "",
     },
   });
+
+  const territory = form.watch("territory");
+  const isReunion = territory === DEFAULT_TERRITORY;
 
   const initials =
     `${data.profile.first_name?.[0] ?? ""}${data.profile.last_name?.[0] ?? ""}`.toUpperCase() ||
@@ -279,9 +284,29 @@ export function StepIdentite({
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
                 <FormLabel>Ville</FormLabel>
-                <FormControl>
-                  <Input autoComplete="address-level2" {...field} />
-                </FormControl>
+                {isReunion ? (
+                  <Select
+                    value={field.value || undefined}
+                    onValueChange={field.onChange}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Sélectionnez une commune" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {REUNION_COMMUNES.map((commune) => (
+                        <SelectItem key={commune} value={commune}>
+                          {commune}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                ) : (
+                  <FormControl>
+                    <Input autoComplete="address-level2" {...field} />
+                  </FormControl>
+                )}
                 <FormMessage />
               </FormItem>
             )}
@@ -294,7 +319,22 @@ export function StepIdentite({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Territoire</FormLabel>
-              <Select value={field.value} onValueChange={field.onChange}>
+              <Select
+                value={field.value}
+                onValueChange={(value) => {
+                  field.onChange(value);
+                  // La ville passe en liste de communes : on efface une
+                  // saisie libre qui n'y figurerait pas.
+                  if (
+                    value === DEFAULT_TERRITORY &&
+                    !(REUNION_COMMUNES as readonly string[]).includes(
+                      form.getValues("city"),
+                    )
+                  ) {
+                    form.setValue("city", "");
+                  }
+                }}
+              >
                 <FormControl>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Choisissez un territoire" />

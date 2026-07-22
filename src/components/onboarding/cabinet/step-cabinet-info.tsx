@@ -28,7 +28,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { REGIONS, STRUCTURE_TYPES, TERRITORIES } from "@/lib/data/reference";
+import {
+  REGIONS,
+  REUNION_COMMUNES,
+  STRUCTURE_TYPES,
+  TERRITORIES,
+} from "@/lib/data/reference";
+import {
+  DEFAULT_DEPARTMENT,
+  DEFAULT_REGION,
+  DEFAULT_TERRITORY,
+} from "@/lib/constants";
 import {
   cabinetStep2Schema,
   type CabinetStep2Input,
@@ -53,6 +63,11 @@ export function StepCabinetInfo({
   const [isPending, startTransition] = useTransition();
   const cabinet = data.cabinet;
 
+  // Marché de lancement : La Réunion est proposée par défaut quand les
+  // valeurs existantes sont vides.
+  const initialTerritory = cabinet?.territory || DEFAULT_TERRITORY;
+  const initialIsReunion = initialTerritory === DEFAULT_TERRITORY;
+
   const form = useForm<CabinetStep2Input>({
     resolver: zodResolver(cabinetStep2Schema),
     defaultValues: {
@@ -64,9 +79,10 @@ export function StepCabinetInfo({
       addressLine2: cabinet?.address_line_2 ?? "",
       postalCode: cabinet?.postal_code ?? "",
       city: cabinet?.city ?? "",
-      department: cabinet?.department ?? "",
-      region: cabinet?.region ?? "",
-      territory: cabinet?.territory ?? METROPOLE,
+      department:
+        cabinet?.department || (initialIsReunion ? DEFAULT_DEPARTMENT : ""),
+      region: cabinet?.region || (initialIsReunion ? DEFAULT_REGION : ""),
+      territory: initialTerritory,
       phone: cabinet?.phone ?? "",
       email: cabinet?.email ?? "",
       website: cabinet?.website ?? "",
@@ -75,6 +91,7 @@ export function StepCabinetInfo({
 
   const territory = form.watch("territory");
   const isMetropole = territory === METROPOLE;
+  const isReunion = territory === DEFAULT_TERRITORY;
 
   const onSubmit = (values: CabinetStep2Input) => {
     startTransition(async () => {
@@ -221,9 +238,29 @@ export function StepCabinetInfo({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Ville</FormLabel>
-                    <FormControl>
-                      <Input autoComplete="address-level2" {...field} />
-                    </FormControl>
+                    {isReunion ? (
+                      <Select
+                        value={field.value || undefined}
+                        onValueChange={field.onChange}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Sélectionnez une commune" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {REUNION_COMMUNES.map((commune) => (
+                            <SelectItem key={commune} value={commune}>
+                              {commune}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <FormControl>
+                        <Input autoComplete="address-level2" {...field} />
+                      </FormControl>
+                    )}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -238,6 +275,19 @@ export function StepCabinetInfo({
                       value={field.value}
                       onValueChange={(value) => {
                         field.onChange(value);
+                        if (value === DEFAULT_TERRITORY) {
+                          // À La Réunion, région et département sont fixés.
+                          form.setValue("region", DEFAULT_REGION);
+                          form.setValue("department", DEFAULT_DEPARTMENT);
+                          if (
+                            !(REUNION_COMMUNES as readonly string[]).includes(
+                              form.getValues("city"),
+                            )
+                          ) {
+                            form.setValue("city", "");
+                          }
+                          return;
+                        }
                         if (value !== METROPOLE) {
                           // En outre-mer, la région correspond au territoire.
                           form.setValue("region", value);
@@ -247,6 +297,11 @@ export function StepCabinetInfo({
                           )
                         ) {
                           form.setValue("region", "");
+                        }
+                        if (
+                          form.getValues("department") === DEFAULT_DEPARTMENT
+                        ) {
+                          form.setValue("department", "");
                         }
                       }}
                     >
@@ -273,7 +328,12 @@ export function StepCabinetInfo({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Région</FormLabel>
-                    {isMetropole ? (
+                    {isReunion ? (
+                      // Remplie automatiquement pour La Réunion.
+                      <FormControl>
+                        <Input value={field.value} readOnly disabled />
+                      </FormControl>
+                    ) : isMetropole ? (
                       <Select value={field.value} onValueChange={field.onChange}>
                         <FormControl>
                           <SelectTrigger className="w-full">
@@ -304,7 +364,15 @@ export function StepCabinetInfo({
                   <FormItem>
                     <FormLabel>Département</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex. : La Réunion, Rhône…" {...field} />
+                      {isReunion ? (
+                        // Rempli automatiquement pour La Réunion.
+                        <Input value={field.value} readOnly disabled />
+                      ) : (
+                        <Input
+                          placeholder="Ex. : La Réunion, Rhône…"
+                          {...field}
+                        />
+                      )}
                     </FormControl>
                     <FormMessage />
                   </FormItem>

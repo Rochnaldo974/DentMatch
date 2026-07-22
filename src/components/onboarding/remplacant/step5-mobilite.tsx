@@ -33,11 +33,17 @@ import {
 } from "@/lib/validation/onboarding-remplacant";
 import {
   REGIONS,
+  REUNION_ZONES,
   OVERSEAS_TERRITORIES,
   type Option,
 } from "@/lib/data/reference";
+import { LAUNCH_MARKET } from "@/lib/constants";
 import type { ReplacementOnboardingData } from "@/components/onboarding/types";
 import { CheckboxGrid, StepFooter, StepHeader, toOptions } from "./step-shell";
+
+// Marché de lancement Réunion : les zones de l'île remplacent les régions
+// nationales (stockées dans le même champ `regions` / area_type 'region').
+const IS_REUNION_MARKET = LAUNCH_MARKET === "reunion";
 
 const TRAVEL_DURATIONS: Option[] = [
   { value: "1_semaine", label: "1 semaine" },
@@ -176,13 +182,23 @@ export function StepMobilite({
           name="regions"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Régions recherchées</FormLabel>
+              <FormLabel>
+                {IS_REUNION_MARKET
+                  ? "Zones de l’île recherchées"
+                  : "Régions recherchées"}
+              </FormLabel>
               <FormControl>
                 <CheckboxGrid
-                  options={toOptions(REGIONS)}
+                  options={
+                    IS_REUNION_MARKET ? REUNION_ZONES : toOptions(REGIONS)
+                  }
                   value={field.value}
                   onChange={field.onChange}
-                  className="sm:grid-cols-2 lg:grid-cols-3"
+                  className={
+                    IS_REUNION_MARKET
+                      ? "sm:grid-cols-1 lg:grid-cols-2"
+                      : "sm:grid-cols-2 lg:grid-cols-3"
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -190,6 +206,8 @@ export function StepMobilite({
           )}
         />
 
+        {/* Départements : masqués en marché Réunion (un seul département). */}
+        {IS_REUNION_MARKET ? null : (
         <FormField
           control={form.control}
           name="departments"
@@ -247,13 +265,18 @@ export function StepMobilite({
             </FormItem>
           )}
         />
+        )}
 
         <FormField
           control={form.control}
           name="overseasTerritories"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Territoires d’outre-mer acceptés</FormLabel>
+              <FormLabel>
+                {IS_REUNION_MARKET
+                  ? "Autres territoires acceptés"
+                  : "Territoires d’outre-mer acceptés"}
+              </FormLabel>
               <FormControl>
                 <CheckboxGrid
                   options={toOptions(OVERSEAS_TERRITORIES)}

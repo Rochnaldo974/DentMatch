@@ -14,6 +14,7 @@ import {
   Send,
   CalendarDays,
   UserRound,
+  UserSearch,
   ShieldCheck,
   FileText,
   type LucideIcon,
@@ -29,6 +30,7 @@ export type NavItem = {
 export const CABINET_NAV: NavItem[] = [
   { href: "/cabinet/dashboard", label: "Vue d'ensemble", icon: LayoutDashboard },
   { href: "/cabinet/annonces", label: "Mes annonces", icon: Megaphone },
+  { href: "/cabinet/remplacants", label: "Trouver un remplaçant", icon: UserSearch },
   { href: "/cabinet/candidatures", label: "Candidatures", icon: Users },
   { href: "/cabinet/remplacements", label: "Remplacements", icon: CalendarCheck },
   { href: "/messages", label: "Messages", icon: MessageSquare },

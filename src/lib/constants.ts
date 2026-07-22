@@ -28,6 +28,16 @@ export const DOCUMENTS_DISCLAIMER =
 
 export const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
+/**
+ * Marché de lancement. La phase de test se déroule à La Réunion :
+ * les formulaires et filtres proposent en priorité les lieux réunionnais.
+ * Passer à "france" pour réactiver les suggestions nationales.
+ */
+export const LAUNCH_MARKET: "reunion" | "france" = "reunion";
+export const DEFAULT_TERRITORY = "La Réunion";
+export const DEFAULT_REGION = "La Réunion";
+export const DEFAULT_DEPARTMENT = "La Réunion";
+
 export const DEMO_ACCOUNTS = {
   cabinet: { email: "demo.cabinet@dentmatch.example", password: "DemoCabinet2026!" },
   remplacant: { email: "demo.remplacant@dentmatch.example", password: "DemoRemplacant2026!" },
