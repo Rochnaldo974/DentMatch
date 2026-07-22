@@ -1,4 +1,4 @@
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, Send } from "lucide-react";
 import { requireRole } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -8,13 +8,15 @@ import { JobPostForm } from "@/components/cabinet/job-post-form";
 export const metadata = { title: "Publier une annonce" };
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export default async function NewJobPostPage({
   searchParams,
 }: {
-  searchParams: Promise<{ debut?: string; fin?: string }>;
+  searchParams: Promise<{ debut?: string; fin?: string; inviter?: string }>;
 }) {
-  const { debut, fin } = await searchParams;
+  const { debut, fin, inviter } = await searchParams;
   const profile = await requireRole("cabinet");
   const supabase = await createClient();
 
@@ -34,9 +36,44 @@ export default async function NewJobPostPage({
   }
 
   // Dates transmises par la recherche de remplaçant (pré-remplissage).
-  const startDate = debut && DATE_RE.test(debut) ? debut : undefined;
-  const endDate = fin && DATE_RE.test(fin) ? fin : undefined;
-  const prefilled = Boolean(startDate || endDate);
+  let startDate = debut && DATE_RE.test(debut) ? debut : undefined;
+  let endDate = fin && DATE_RE.test(fin) ? fin : undefined;
+
+  // Flux guidé « inviter sans annonce » : candidat à inviter à la publication.
+  let inviteCandidate: { userId: string; name: string } | undefined;
+  if (inviter && UUID_RE.test(inviter)) {
+    const { data: candidate } = await supabase
+      .from("public_candidate_profiles")
+      .select("user_id, first_name, last_name_initial")
+      .eq("user_id", inviter)
+      .maybeSingle();
+    if (candidate?.user_id) {
+      inviteCandidate = {
+        userId: candidate.user_id,
+        name: [candidate.first_name, candidate.last_name_initial]
+          .filter(Boolean)
+          .join(" "),
+      };
+      // Sans dates transmises : proposer la prochaine disponibilité du candidat.
+      if (!startDate) {
+        const today = new Date().toISOString().slice(0, 10);
+        const { data: nextAvailability } = await supabase
+          .from("availabilities")
+          .select("start_date, end_date")
+          .eq("user_id", candidate.user_id)
+          .eq("available", true)
+          .gte("start_date", today)
+          .order("start_date", { ascending: true })
+          .limit(1)
+          .maybeSingle();
+        if (nextAvailability?.start_date) {
+          startDate = nextAvailability.start_date;
+          endDate = nextAvailability.end_date ?? undefined;
+        }
+      }
+    }
+  }
+  const prefilled = Boolean(startDate || endDate) && !inviteCandidate;
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
@@ -50,6 +87,21 @@ export default async function NewJobPostPage({
         </p>
       </div>
 
+      {inviteCandidate ? (
+        <Alert className="border-verified/30 bg-verified-soft/50">
+          <Send className="size-4" aria-hidden="true" />
+          <AlertDescription>
+            <span className="font-medium text-foreground">
+              À la publication, {inviteCandidate.name} sera automatiquement
+              invité(e) à candidater à cette annonce.
+            </span>{" "}
+            {startDate
+              ? "Les dates proposées correspondent à sa prochaine disponibilité — modifiables à tout moment."
+              : "Un brouillon n'envoie pas d'invitation."}
+          </AlertDescription>
+        </Alert>
+      ) : null}
+
       {prefilled ? (
         <Alert className="border-primary/25 bg-primary/5">
           <CalendarDays className="size-4" aria-hidden="true" />
@@ -62,8 +114,9 @@ export default async function NewJobPostPage({
 
       <JobPostForm
         cabinetCity={cabinet.city}
+        invite={inviteCandidate}
         defaultValues={
-          prefilled
+          startDate || endDate
             ? {
                 ...(startDate ? { startDate } : {}),
                 ...(endDate ? { endDate } : {}),

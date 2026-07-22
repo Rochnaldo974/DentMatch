@@ -56,6 +56,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { createJobPost, updateJobPost } from "@/app/actions/job-posts";
+import { inviteCandidateToJobPost } from "@/app/actions/candidates";
 import { jobPostSchema, type JobPostInput } from "@/lib/validation/job-post";
 import {
   COMPENSATION_GUIDANCE,
@@ -271,10 +272,13 @@ export function JobPostForm({
   defaultValues,
   jobPostId,
   cabinetCity,
+  invite,
 }: {
   defaultValues?: Partial<JobPostInput>;
   jobPostId?: string;
   cabinetCity?: string | null;
+  /** Candidat à inviter automatiquement dès la publication de l'annonce. */
+  invite?: { userId: string; name: string };
 }) {
   const router = useRouter();
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -329,11 +333,33 @@ export function JobPostForm({
       toast.error(result.error);
       return;
     }
-    toast.success(
-      publish
-        ? "Annonce publiée. Elle est désormais visible par les remplaçants."
-        : "Annonce enregistrée en brouillon.",
-    );
+
+    // Invitation automatique du candidat à la publication (flux guidé).
+    if (invite && publish && result.jobPostId) {
+      const invitation = await inviteCandidateToJobPost(
+        result.jobPostId,
+        invite.userId,
+      );
+      if (invitation.error) {
+        toast.warning(
+          `Annonce publiée, mais l'invitation n'a pas pu être envoyée : ${invitation.error}`,
+        );
+      } else {
+        toast.success(
+          `Annonce publiée. Invitation envoyée à ${invite.name}.`,
+        );
+      }
+    } else if (invite && !publish) {
+      toast.success(
+        `Annonce enregistrée en brouillon. ${invite.name} sera à inviter après publication (depuis « Trouver un remplaçant »).`,
+      );
+    } else {
+      toast.success(
+        publish
+          ? "Annonce publiée. Elle est désormais visible par les remplaçants."
+          : "Annonce enregistrée en brouillon.",
+      );
+    }
     router.push("/cabinet/annonces");
     router.refresh();
   }

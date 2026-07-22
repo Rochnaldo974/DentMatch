@@ -313,17 +313,11 @@ export default async function CabinetCandidatesPage({
       {jobPosts.length === 0 ? (
         <Alert>
           <Info className="size-4" aria-hidden="true" />
-          <AlertTitle>
-            Publiez une annonce pour pouvoir inviter des remplaçants
-          </AlertTitle>
+          <AlertTitle>Vous n&apos;avez pas encore d&apos;annonce publiée</AlertTitle>
           <AlertDescription>
-            Les invitations sont rattachées à une annonce publiée.{" "}
-            <Link
-              href="/cabinet/annonces/nouvelle"
-              className="font-medium text-foreground underline underline-offset-4"
-            >
-              Créer une annonce
-            </Link>
+            Vous pouvez quand même inviter un remplaçant : nous vous guiderons
+            pour créer l&apos;annonce, et l&apos;invitation partira
+            automatiquement à sa publication.
           </AlertDescription>
         </Alert>
       ) : null}
